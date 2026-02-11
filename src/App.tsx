@@ -21,7 +21,7 @@ function App() {
 
 			<Routes>
 				<Route path='/' element={<Home />}/>
-				<Route path='/generator' element={<Genetator />}/>
+				<Route path='/generate' element={<Genetator />}/>
 				<Route path='/result/:projectId' element={<Result />}/>
 				<Route path='/my-generations' element={<MyGenerations />}/>
 				<Route path='/community' element={<Community />}/>

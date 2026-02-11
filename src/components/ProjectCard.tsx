@@ -1,14 +1,24 @@
 import { use, useState } from "react"
 import type { Project } from "../types"
 import { useNavigate } from "react-router"
-import { div, p } from "framer-motion/client"
-import { Loader2Icon } from "lucide-react"
+import { button, div, p } from "framer-motion/client"
+import { EllipsisIcon, ImageIcon, Loader2Icon, PlaySquareIcon, Share2Icon, Trash2Icon } from "lucide-react"
 
 const ProjectCard = ({gen, setGenerations, forCommunity = false} : 
     {gen: Project, setGenerations: React.Dispatch<React.SetStateAction<Project[]>>, forCommunity?: boolean}) => {
   
         const navigate = useNavigate()
         const [menuOpen, setMenuOpen] = useState(false)
+
+        const handleDelete = async (id: string) => {
+            const confirm = window.confirm('Are you sure you want to delete this Project?')
+            if (!confirm) return;
+            console.log(id)
+        }
+
+        const togglePublished = async (projectId: string) => {
+            console.log(projectId)
+        }
     
     return (
         <div key={gen.id} className="mb-4 break-inside-avoid">
@@ -41,6 +51,44 @@ const ProjectCard = ({gen, setGenerations, forCommunity = false} :
                     <span className="bg-green-600/30 text-xs px-2 py-1 rounded-full">Published</span>
                     )}
                 </div>
+
+                {/*action menu for my generations only*/}
+                {!forCommunity && (
+                    <div
+                    onMouseDownCapture={()=>{setMenuOpen(true)}}
+                    onMouseLeave={()=>{setMenuOpen(false)}}
+                    className="absolute right-3 top-3 sm:opacity-0 group-hover:opacity-100 transition flex items-center gap-2">
+                        <div className="absolute top-3 right-3">
+                            <EllipsisIcon className="ml-auto bg-black/10 rounded-full p-1 size-7" />
+                        </div>
+                        <div className="flex flex-col items-end w-32 text-sm">
+                            <ul className={`text-xs ${menuOpen ? 'block' : 'hidden'} overflow-hidden right-0 peer-focus:block hover:block w-40 bg-black-50 backdrop:blur text-white border border-gray-500/50 ronded-lg shadow-md py-1 z-10`}>
+                                {gen.generatedImage && <a href="#" download 
+                                className="flex gap-2 items-center px-4 py-2 hover:bg-black/10 cursor-pointer">
+                                    <ImageIcon size={14} />Download Image</a>}
+                                
+                                {gen.generatedVideo && <a href="#" download 
+                                className="flex gap-2 items-center px-4 py-2 hover:bg-black/10 cursor-pointer">
+                                    <PlaySquareIcon size={14} />Download Video</a>}
+
+                                {(gen.generatedImage || gen.generatedVideo) && <button
+                                onClick={()=> navigator.share({url: gen.generatedVideo || gen.generatedImage,
+                                    title: gen.productName, text: gen.productDescription
+                                })} className=" w-full flex gap-2 items-center px-4 py-2 hover:bg-black/10 cursor-ponit">
+                                    <Share2Icon size={14}/> Share
+                                    </button>}
+
+                                    <button onClick={()=>handleDelete(gen.id)} 
+                                    className="w-full flex gap-2 items-center
+                                    px-4 py-2 hover:bg-red-950/10 text-red-400 cursor-pointer">
+                                       <Trash2Icon size={14}/> Delete
+                                    </button>
+                            </ul>
+
+                        </div>
+                    </div>
+                )}
+
                  
                 {/* source image */}
                 <div className="absolute right-3 bottom-3">

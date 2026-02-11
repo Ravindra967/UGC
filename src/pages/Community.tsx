@@ -11,12 +11,7 @@ const Community = () => {
 
   const fetchProjects = async () => {
     setTimeout(() => {
-      setProjects(dummyGenerations.map(project => ({
-        ...project,
-        name: project.productName,
-        modelImageUrl: project.generatedImage,
-        uploadedImges: project.uploadedImages
-      })));
+      setProjects(dummyGenerations);
       setLoading(false)
     }, 3000)
       
