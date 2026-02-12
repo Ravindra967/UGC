@@ -3,6 +3,7 @@ import type { Project } from "../types"
 import { useNavigate } from "react-router"
 import { button, div, p } from "framer-motion/client"
 import { EllipsisIcon, ImageIcon, Loader2Icon, PlaySquareIcon, Share2Icon, Trash2Icon } from "lucide-react"
+import { GhostButton, PrimaryButton } from "./Buttons"
 
 const ProjectCard = ({gen, setGenerations, forCommunity = false} : 
     {gen: Project, setGenerations: React.Dispatch<React.SetStateAction<Project[]>>, forCommunity?: boolean}) => {
@@ -128,6 +129,20 @@ const ProjectCard = ({gen, setGenerations, forCommunity = false} :
                         <div className="text-xs text-gray-300 bg-white/3 p-2 roundedmd wrap-break-word">{gen.userPrompt}</div>
                     </div>
                 )}
+                {/* buttons */}
+                {!forCommunity && (
+                    <div className="mt-4 grid grid-cols-2 gap-3">
+                        <GhostButton className="text-xs justify-center"
+                        onClick={()=>{navigate(`/result/${gen.id}`); scrollTo(0,0)}}>
+                            View Details
+                        </GhostButton>
+                        <PrimaryButton onClick={()=> togglePublished(gen.id)}
+                            className="rounded-md">
+                            {gen.isPublished ? 'Unpublish' : 'Publish'}
+                        </PrimaryButton>
+
+                    </div>
+                    )}
 
 
             </div>
